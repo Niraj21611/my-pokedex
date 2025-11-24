@@ -88,17 +88,17 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
   const typeColor = TYPE_COLORS[primaryType] || COLORS.neutral;
 
   return (
-    <div className="w-full max-w-6xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div className="w-full max-w-6xl mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 transition-all duration-300">
       <div
-        className="px-8 py-6 border-b border-gray-200 dark:border-gray-800"
-        style={{ backgroundColor: `${typeColor}15` }}
+        className="px-8 py-8 border-b border-slate-100 dark:border-slate-800 relative overflow-hidden"
       >
-        <div className="flex justify-between items-center">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundColor: typeColor }}></div>
+        <div className="relative flex justify-between items-center z-10">
           <div>
-            <h2 className="text-4xl font-bold capitalize text-gray-900 dark:text-white">
+            <h2 className="text-5xl font-extrabold capitalize text-slate-900 dark:text-white tracking-tight">
               {pokemon.name}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-xl text-slate-500 dark:text-slate-400 mt-1 font-medium">
               #{String(pokemon.id).padStart(3, "0")}
             </p>
           </div>
@@ -148,12 +148,12 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
         <div className="grid lg:grid-cols-3 gap-8 mb-8">
           <div className="lg:col-span-1">
             {pokemon.sprites.default && (
-              <div className="relative w-full aspect-square mb-6 bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+              <div className="relative w-full aspect-square mb-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-8 shadow-inner">
                 <Image
                   src={pokemon.sprites.default}
                   alt={pokemon.name}
                   fill
-                  className="object-contain"
+                  className="object-contain drop-shadow-xl"
                   priority
                 />
               </div>
@@ -163,7 +163,7 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
               {pokemon.types.map((type) => (
                 <span
                   key={type}
-                  className="px-4 py-2 rounded-lg text-white font-semibold uppercase text-xs tracking-wide"
+                  className="px-4 py-2 rounded-full text-white font-bold uppercase text-xs tracking-wider shadow-sm"
                   style={{
                     backgroundColor: TYPE_COLORS[type] || COLORS.neutral,
                   }}
@@ -174,9 +174,9 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-center">
+              <div className="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-2xl text-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                 <svg
-                  className="w-6 h-6 mx-auto mb-2 text-gray-600 dark:text-gray-400"
+                  className="w-6 h-6 mx-auto mb-2 text-slate-400 dark:text-slate-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -188,16 +188,16 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                     d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
                   />
                 </svg>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium uppercase tracking-wide">
                   Height
                 </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-white">
+                <p className="text-xl font-bold text-slate-900 dark:text-white">
                   {pokemon.height}m
                 </p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-center">
+              <div className="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-2xl text-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                 <svg
-                  className="w-6 h-6 mx-auto mb-2 text-gray-600 dark:text-gray-400"
+                  className="w-6 h-6 mx-auto mb-2 text-slate-400 dark:text-slate-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -209,18 +209,18 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                     d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
                   />
                 </svg>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium uppercase tracking-wide">
                   Weight
                 </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-white">
+                <p className="text-xl font-bold text-slate-900 dark:text-white">
                   {pokemon.weight}kg
                 </p>
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-center">
+            <div className="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-2xl text-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
               <svg
-                className="w-6 h-6 mx-auto mb-2 text-gray-600 dark:text-gray-400"
+                className="w-6 h-6 mx-auto mb-2 text-slate-400 dark:text-slate-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -232,20 +232,20 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium uppercase tracking-wide">
                 Base Experience
               </p>
-              <p className="text-xl font-bold text-gray-900 dark:text-white">
+              <p className="text-xl font-bold text-slate-900 dark:text-white">
                 {pokemon.base_experience}
               </p>
             </div>
           </div>
 
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-8">
             <div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
                 <svg
-                  className="w-5 h-5 mr-2"
+                  className="w-6 h-6 mr-2 text-[#007E6E] dark:text-[#73AF6F]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -259,15 +259,15 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                 </svg>
                 About
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl text-lg">
                 {pokemon.flavor_text.replace(/\f/g, " ")}
               </p>
             </div>
 
             <div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
                 <svg
-                  className="w-5 h-5 mr-2"
+                  className="w-6 h-6 mr-2 text-[#007E6E] dark:text-[#73AF6F]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -281,23 +281,23 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                 </svg>
                 Base Stats
               </h3>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid sm:grid-cols-2 gap-4">
                 {pokemon.stats.map((stat) => (
                   <div
                     key={stat.name}
-                    className="bg-gray-50 dark:bg-gray-800 p-3 rounded-xl"
+                    className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl"
                   >
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="capitalize text-gray-700 dark:text-gray-300 font-medium">
+                      <span className="capitalize text-slate-600 dark:text-slate-300 font-semibold">
                         {stat.name.replace("-", " ")}
                       </span>
-                      <span className="font-bold text-gray-900 dark:text-white">
+                      <span className="font-bold text-slate-900 dark:text-white">
                         {stat.base}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
                       <div
-                        className="h-2 rounded-full transition-all"
+                        className="h-2.5 rounded-full transition-all duration-500 ease-out"
                         style={{
                           width: `${Math.min((stat.base / 255) * 100, 100)}%`,
                           backgroundColor: typeColor,
@@ -310,9 +310,9 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
             </div>
 
             <div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
                 <svg
-                  className="w-5 h-5 mr-2"
+                  className="w-6 h-6 mr-2 text-[#007E6E] dark:text-[#73AF6F]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -326,11 +326,11 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                 </svg>
                 Abilities
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {pokemon.abilities.map((ability) => (
                   <span
                     key={ability}
-                    className="px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl text-gray-900 dark:text-white capitalize text-sm font-medium border border-gray-200 dark:border-gray-700"
+                    className="px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl text-slate-900 dark:text-white capitalize text-sm font-semibold border border-slate-200 dark:border-slate-700 shadow-sm"
                   >
                     {ability.replace("-", " ")}
                   </span>
@@ -340,9 +340,9 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
 
             {pokemon.evolutions.length > 1 && (
               <div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
                   <svg
-                    className="w-5 h-5 mr-2"
+                    className="w-6 h-6 mr-2 text-[#007E6E] dark:text-[#73AF6F]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -356,15 +356,15 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                   </svg>
                   Evolution Chain
                 </h3>
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-3 flex-wrap">
                   {pokemon.evolutions.map((evo, index) => (
                     <div key={evo.name} className="flex items-center">
-                      <span className="px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl text-gray-900 dark:text-white capitalize text-sm font-medium border border-gray-200 dark:border-gray-700">
+                      <span className="px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl text-slate-900 dark:text-white capitalize text-sm font-semibold border border-slate-200 dark:border-slate-700 shadow-sm">
                         {evo.name}
                       </span>
                       {index < pokemon.evolutions.length - 1 && (
                         <svg
-                          className="w-5 h-5 mx-2 text-gray-400"
+                          className="w-6 h-6 mx-2 text-slate-300 dark:text-slate-600"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -386,10 +386,10 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
         </div>
 
         {pokemon.moves && pokemon.moves.length > 0 && (
-          <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+          <div className="border-t border-slate-100 dark:border-slate-800 pt-10">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
               <svg
-                className="w-6 h-6 mr-2"
+                className="w-7 h-7 mr-2 text-[#007E6E] dark:text-[#73AF6F]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -402,22 +402,22 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                 />
               </svg>
               Move Set
-              <span className="ml-2 text-sm font-normal text-gray-600 dark:text-gray-400">
-                ({pokemon.moves.length} moves)
+              <span className="ml-3 text-sm font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+                {pokemon.moves.length} moves
               </span>
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {pokemon.moves.map((move) => (
                 <div
                   key={move.name}
-                  className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-[#73AF6F] dark:hover:border-[#007E6E] transition-all"
+                  className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-[#73AF6F] dark:hover:border-[#007E6E] hover:shadow-md transition-all duration-200 group"
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-white capitalize text-sm flex-1 mr-2">
+                  <div className="flex justify-between items-start mb-3">
+                    <h4 className="font-bold text-slate-800 dark:text-white capitalize text-sm flex-1 mr-2 group-hover:text-[#007E6E] dark:group-hover:text-[#73AF6F] transition-colors">
                       {move.name.replace("-", " ")}
                     </h4>
                     <span
-                      className="px-2 py-0.5 rounded text-xs font-semibold text-white whitespace-nowrap"
+                      className="px-2.5 py-1 rounded-md text-xs font-bold text-white whitespace-nowrap shadow-sm"
                       style={{
                         backgroundColor:
                           TYPE_COLORS[move.type] || COLORS.neutral,
@@ -426,10 +426,10 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                       {move.type}
                     </span>
                   </div>
-                  <div className="flex gap-3 text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    <span className="flex items-center">
+                  <div className="flex gap-3 text-xs text-slate-500 dark:text-slate-400 mb-3 font-medium">
+                    <span className="flex items-center bg-slate-50 dark:bg-slate-900/50 px-2 py-1 rounded">
                       <svg
-                        className="w-3 h-3 mr-1"
+                        className="w-3 h-3 mr-1.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -437,9 +437,9 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                       </svg>
                       {move.power || "—"}
                     </span>
-                    <span className="flex items-center">
+                    <span className="flex items-center bg-slate-50 dark:bg-slate-900/50 px-2 py-1 rounded">
                       <svg
-                        className="w-3 h-3 mr-1"
+                        className="w-3 h-3 mr-1.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -451,9 +451,9 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                       </svg>
                       {move.accuracy || "—"}%
                     </span>
-                    <span className="flex items-center">
+                    <span className="flex items-center bg-slate-50 dark:bg-slate-900/50 px-2 py-1 rounded">
                       <svg
-                        className="w-3 h-3 mr-1"
+                        className="w-3 h-3 mr-1.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -466,7 +466,7 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                       PP {move.pp}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
                     {move.effect}
                   </p>
                 </div>
