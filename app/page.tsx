@@ -100,14 +100,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#E7DEAF] dark:bg-gray-900 py-12 px-4 flex items-center justify-center">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 flex items-center justify-center transition-colors duration-300">
       <div className="max-w-7xl w-full">
         {!pokemon && !loading && (
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center mb-4">
-              <div className="bg-white dark:bg-gray-800 p-4 rounded-full shadow-lg">
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="flex items-center justify-center mb-6">
+              <div className="bg-white dark:bg-slate-800 p-5 rounded-full shadow-xl ring-1 ring-slate-200 dark:ring-slate-700">
                 <svg
-                  className="w-12 h-12 text-[#007E6E] dark:text-[#73AF6F]"
+                  className="w-14 h-14 text-[#007E6E] dark:text-[#73AF6F]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -121,31 +121,32 @@ export default function Home() {
                 </svg>
               </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-[#007E6E] dark:text-white mb-3">
-              PokéDex
+            <h1 className="text-6xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">
+              Poké<span className="text-[#007E6E]">Dex</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              Discover and explore Pokémon
+            <p className="text-slate-600 dark:text-slate-400 text-xl font-light">
+              Discover and explore the world of Pokémon
             </p>
           </div>
         )}
 
-        <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
+        <div className="max-w-2xl mx-auto mb-10">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-linear-to-r from-[#73AF6F] to-[#007E6E] rounded-full blur opacity-25 group-hover:opacity-50 transition duration-200"></div>
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search Pokémon by name or number..."
-              className="w-full px-8 py-5 text-lg rounded-full border-2 border-[#73AF6F] dark:border-[#007E6E] bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-[#007E6E] dark:focus:border-[#73AF6F] shadow-xl transition-all hover:shadow-2xl"
+              className="relative w-full px-8 py-6 text-xl rounded-full border-0 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-[#007E6E] dark:focus:ring-[#73AF6F] shadow-2xl transition-all"
               autoFocus
             />
-            <div className="absolute right-6 top-1/2 -translate-y-1/2">
+            <div className="absolute right-8 top-1/2 -translate-y-1/2">
               {loading ? (
                 <div className="w-6 h-6 border-3 border-[#73AF6F] border-t-transparent rounded-full animate-spin"></div>
               ) : (
                 <svg
-                  className="w-6 h-6 text-gray-400"
+                  className="w-6 h-6 text-slate-400 group-hover:text-[#007E6E] transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -160,22 +161,42 @@ export default function Home() {
               )}
             </div>
           </div>
+          
+          {/* Cache indicator */}
+          {isCached && pokemon && (
+            <div className="flex justify-center mt-4">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Cached Result
+              </span>
+            </div>
+          )}
         </div>
 
         {error && (
-          <div className="max-w-2xl mx-auto mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-2xl text-center">
-            <p className="text-red-700 dark:text-red-300 text-sm font-medium">
+          <div className="max-w-xl mx-auto mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl text-center animate-fade-in">
+            <p className="text-red-600 dark:text-red-400 font-medium">
               {error}
             </p>
           </div>
         )}
 
-        {pokemon && !loading && <PokemonCard pokemon={pokemon} />}
+        {pokemon && !loading && (
+          <div className="animate-fade-in-up">
+            <PokemonCard pokemon={pokemon} />
+          </div>
+        )}
 
         {!pokemon && !loading && !error && (
-          <div className="text-center max-w-2xl mx-auto">
-            <p className="text-gray-600 dark:text-gray-400 text-base mb-6 font-medium">
-              Popular Pokémon
+          <div className="text-center max-w-3xl mx-auto animate-fade-in">
+            <p className="text-slate-500 dark:text-slate-400 text-sm uppercase tracking-wider font-semibold mb-6">
+              Popular Searches
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               {["pikachu", "charizard", "mewtwo", "eevee", "lucario", "dragonite", "gyarados", "gengar"].map(
@@ -183,7 +204,7 @@ export default function Home() {
                   <button
                     key={suggestion}
                     onClick={() => handleSearch(suggestion)}
-                    className="px-6 py-3 bg-white dark:bg-gray-800 hover:bg-[#73AF6F] hover:text-white dark:hover:bg-[#73AF6F] text-gray-700 dark:text-gray-300 border-2 border-[#73AF6F] dark:border-[#007E6E] rounded-full text-sm font-semibold transition-all capitalize shadow-md hover:shadow-xl hover:scale-105 active:scale-95"
+                    className="px-6 py-2.5 bg-white dark:bg-slate-800 hover:bg-[#007E6E] hover:text-white dark:hover:bg-[#73AF6F] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 capitalize"
                   >
                     {suggestion}
                   </button>
