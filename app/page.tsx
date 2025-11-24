@@ -33,41 +33,64 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isCached, setIsCached] = useState(false);
+  const [allNames, setAllNames] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const debounceTimer = useRef<NodeJS.Timeout | undefined>(undefined);
   const lastSearchTime = useRef(0);
-  const THROTTLE_DELAY = 500; 
+  const THROTTLE_DELAY = 500;
 
-  const fetchPokemon = useCallback(async (name: string) => {
-    if (!name.trim()) {
-      setPokemon(null);
-      setError("");
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch(`/api/pokemon/${name.toLowerCase()}`);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Pokémon not found");
+  const fetchPokemon = useCallback(
+    async (name: string) => {
+      if (!name.trim()) {
+        setPokemon(null);
+        setError("");
+        setSuggestions([]);
+        return;
       }
 
-      setPokemon(data);
-      setIsCached(data.cached || false);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch Pokémon");
-      setPokemon(null);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      setLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch(`/api/pokemon/${name.toLowerCase()}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Pokémon not found");
+        }
+
+        setPokemon(data);
+        setIsCached(data.cached || false);
+      } catch (err) {
+        const hasSuggestions = suggestions.length > 0;
+        setError(
+          hasSuggestions
+            ? ""
+            : err instanceof Error
+            ? `No Pokémon found with the name "${name.trim()}"`
+            : "Failed to fetch Pokémon"
+        );
+        setPokemon(null);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [suggestions.length]
+  );
 
   const handleSearch = useCallback(
     (value: string) => {
       setSearchTerm(value);
+
+      const normalized = value.toLowerCase().trim();
+      if (!normalized) {
+        setSuggestions([]);
+      } else {
+        const matches = allNames
+          .filter((name) => name.startsWith(normalized))
+          .slice(0, 8);
+        setSuggestions(matches);
+      }
 
       //Debouncing
       if (debounceTimer.current) {
@@ -88,10 +111,24 @@ export default function Home() {
         fetchPokemon(value);
       }
     },
-    [fetchPokemon]
+    [allNames, fetchPokemon]
   );
 
   useEffect(() => {
+    const loadNames = async () => {
+      try {
+        const res = await fetch("/api/pokemon-suggestions");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.names)) {
+          setAllNames(data.names);
+        }
+      } catch {
+      }
+    };
+
+    loadNames();
+
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
@@ -161,25 +198,24 @@ export default function Home() {
               )}
             </div>
           </div>
-          
-          {/* Cache indicator */}
-          {isCached && pokemon && (
-            <div className="flex justify-center mt-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Cached Result
-              </span>
+
+          {searchTerm.trim() && !pokemon && suggestions.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {suggestions.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => handleSearch(name)}
+                  className="px-4 py-2 bg-white dark:bg-slate-800 hover:bg-[#007E6E] hover:text-white dark:hover:bg-[#73AF6F] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 capitalize"
+                >
+                  {name}
+                </button>
+              ))}
             </div>
           )}
         </div>
 
-        {error && (
+        {error && !pokemon && (
           <div className="max-w-xl mx-auto mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl text-center animate-fade-in">
             <p className="text-red-600 dark:text-red-400 font-medium">
               {error}
@@ -193,23 +229,30 @@ export default function Home() {
           </div>
         )}
 
-        {!pokemon && !loading && !error && (
+        {!pokemon && !loading && !error && !searchTerm.trim() && (
           <div className="text-center max-w-3xl mx-auto animate-fade-in">
             <p className="text-slate-500 dark:text-slate-400 text-sm uppercase tracking-wider font-semibold mb-6">
               Popular Searches
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {["pikachu", "charizard", "mewtwo", "eevee", "lucario", "dragonite", "gyarados", "gengar"].map(
-                (suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => handleSearch(suggestion)}
-                    className="px-6 py-2.5 bg-white dark:bg-slate-800 hover:bg-[#007E6E] hover:text-white dark:hover:bg-[#73AF6F] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 capitalize"
-                  >
-                    {suggestion}
-                  </button>
-                )
-              )}
+              {[
+                "pikachu",
+                "charizard",
+                "mewtwo",
+                "eevee",
+                "lucario",
+                "dragonite",
+                "gyarados",
+                "gengar",
+              ].map((suggestion) => (
+                <button
+                  key={suggestion}
+                  onClick={() => handleSearch(suggestion)}
+                  className="px-6 py-2.5 bg-white dark:bg-slate-800 hover:bg-[#007E6E] hover:text-white dark:hover:bg-[#73AF6F] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 capitalize"
+                >
+                  {suggestion}
+                </button>
+              ))}
             </div>
           </div>
         )}
