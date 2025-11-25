@@ -123,8 +123,7 @@ export default function Home() {
         if (Array.isArray(data.names)) {
           setAllNames(data.names);
         }
-      } catch {
-      }
+      } catch {}
     };
 
     loadNames();
@@ -158,9 +157,13 @@ export default function Home() {
                 </svg>
               </div>
             </div>
-            <h1 className="text-6xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">
+            <h1
+              className="text-6xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight"
+              style={{ fontFamily: "Arial, sans-serif" }}
+            >
               Poké<span className="text-[#007E6E]">Dex</span>
             </h1>
+
             <p className="text-slate-600 dark:text-slate-400 text-xl font-light">
               Discover and explore the world of Pokémon
             </p>
